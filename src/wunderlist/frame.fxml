@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="640.0" prefWidth="280.0" style="-fx-background-color: white;">
+         <children>
+            <AnchorPane prefHeight="40.0" prefWidth="280.0" style="-fx-background-color: white;">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="5.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/AccPic.png" />
+                     </image>
+                  </ImageView>
+                  <MenuButton graphicTextGap="5.0" layoutX="33.0" layoutY="3.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: white;" text="Yashar">
+                    <items>
+                      <MenuItem disable="true" mnemonicParsing="false" text="Last synced a minute ago" />
+                      <MenuItem mnemonicParsing="false" text="Sync now" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Check for Updates" />
+                        <MenuItem mnemonicParsing="false" text="Become a Pro" />
+                        <MenuItem mnemonicParsing="false" text="Account Setting" />
+                        <MenuItem mnemonicParsing="false" text="Change Backround" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Tell Your Friends..." />
+                        <MenuItem mnemonicParsing="false" text="Get Wunderlist Pro for Free" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Wunderlist Website" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem disable="true" mnemonicParsing="false" text="yasharnesabian@yahoo.com" />
+                        <MenuItem mnemonicParsing="false" text="Sign Out" />
+                    </items>
+                  </MenuButton>
+               </children>
+               <effect>
+                  <DropShadow color="#0000004d" />
+               </effect>
+            </AnchorPane>
+         </children>
+         <effect>
+            <DropShadow color="#00000066" />
+         </effect></VBox>
+      <FlowPane fx:id="flowPane" layoutX="280.0" prefHeight="640.0" prefWidth="680.0">
+         <children>
+            <VBox fx:id="middleBox" alignment="TOP_CENTER" prefHeight="640.0" prefWidth="680.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="addItemTextField" prefHeight="40.0" prefWidth="660.0" promptText="Add an item in &quot;Inbox&quot;..." style="-fx-background-radius: 3; -fx-background-color: rgba(84,84,84,0.3);">
+                     <font>
+                        <Font size="15.0" />
+                     </font></TextField>
+                  <ListView fx:id="items" editable="true" prefHeight="555.0" prefWidth="640.0">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></ListView>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <FlowPane.margin>
+                  <Insets />
+               </FlowPane.margin>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children></FlowPane>
+      <AnchorPane fx:id="informationBoard" layoutX="960.0" prefHeight="640.0" prefWidth="380.0" style="-fx-background-color: rgba(86,86,86,0);">
+         <children>
+            <VBox layoutX="14.0" layoutY="14.0" prefHeight="560.0" prefWidth="348.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+               <effect>
+                  <DropShadow />
+               </effect>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

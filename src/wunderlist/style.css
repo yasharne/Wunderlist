@@ -1,0 +1,18 @@
+.list-view .virtual-flow .clipped-container .sheet .list-cell:empty:even,
+.list-view .virtual-flow .clipped-container .sheet .list-cell:empty:odd{
+    -fx-background-color: transparent;
+}
+
+.list-view .virtual-flow .clipped-container .sheet .list-cell:filled:even,
+.list-view .virtual-flow .clipped-container .sheet .list-cell:filled:odd{
+    -fx-background-radius: 3;
+}
+
+.list-view{
+    -fx-background-color: rgba(84, 84, 84, 0);
+}
+.list-cell{
+    -fx-padding: 2px ;
+    -fx-background-color: transparent, white ;
+    -fx-background-insets: 0px, 2px ;
+}
