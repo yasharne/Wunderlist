@@ -107,7 +107,7 @@ public class Wunderlist extends Application {
                     //timeline2.play();
                     final ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), middleBox);
                     scaleTransition.setByX(informationBoardOpened ? 0 : -380);
-                    scaleTransition.play();
+                    //scaleTransition.play();
                     informationBoardOpened = !informationBoardOpened;
                     System.out.println("clicked on " + items.getSelectionModel().getSelectedItem());
                 }
@@ -123,10 +123,12 @@ public class Wunderlist extends Application {
             }
         });
         addItemTextField.setOnAction((ActionEvent event) -> {
-            Entry e = new Entry(addItemTextField.getText());
-            listOfItems.add(0, e);
+            if (addItemTextField.getText().length() > 0) {
+                Entry e = new Entry(addItemTextField.getText());
+                listOfItems.add(0, e);
+                addItemTextField.setText("");
+            }
 
-            addItemTextField.setText("");
         });
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

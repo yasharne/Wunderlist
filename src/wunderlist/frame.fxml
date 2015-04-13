@@ -73,10 +73,23 @@
          </children></FlowPane>
       <AnchorPane fx:id="informationBoard" layoutX="960.0" prefHeight="640.0" prefWidth="380.0" style="-fx-background-color: rgba(86,86,86,0);">
          <children>
-            <VBox layoutX="14.0" layoutY="14.0" prefHeight="560.0" prefWidth="348.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+            <VBox layoutX="14.0" layoutY="14.0" prefHeight="560.0" prefWidth="348.0" style="-fx-background-color: white; -fx-background-radius: 3;" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                <effect>
                   <DropShadow />
                </effect>
+               <children>
+                  <AnchorPane prefHeight="60.0" prefWidth="348.0" style="-fx-background-color: white;">
+                     <effect>
+                        <DropShadow color="#0000004d" />
+                     </effect>
+                  </AnchorPane>
+                  <VBox prefHeight="460.0" prefWidth="348.0" />
+                  <AnchorPane prefHeight="90.0" prefWidth="350.0" style="-fx-background-color: white;">
+                     <effect>
+                        <DropShadow color="#0000004d" />
+                     </effect>
+                  </AnchorPane>
+               </children>
             </VBox>
          </children>
       </AnchorPane>
