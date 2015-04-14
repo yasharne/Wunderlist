@@ -25,12 +25,14 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -96,18 +98,19 @@ public class Wunderlist extends Application {
                 }
             }
         });
+        ScrollBar sb = ((ScrollBar) (items.lookupAll(".scroll-bar").toArray()[0]));
+        sb.setStyle("-fx-background-radius: 3 ; -fx-background-color: rgba(84,84,84,0.3)");
         items.setOnMouseClicked((MouseEvent event) -> {
             if (items.getSelectionModel().getSelectedItem() != null) {
                 if (event.getClickCount() == 2) {
-                    final Timeline timeline1 = new Timeline();
-                    timeline1.getKeyFrames().addAll(new KeyFrame(new Duration(200), new KeyValue(informationBoard.translateXProperty(), informationBoardOpened ? 0 : -380)));
-                    timeline1.play();
-                    //final Timeline timeline2 = new Timeline();
-                    //timeline2.getKeyFrames().addAll(new KeyFrame(new Duration(200), new KeyValue(middleBox.translateXProperty(), informationBoardOpened ? 0 : -380)));
-                    //timeline2.play();
-                    final ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(200), middleBox);
-                    scaleTransition.setByX(informationBoardOpened ? 0 : -380);
-                    //scaleTransition.play();
+                    final Timeline timeline = new Timeline();
+                    timeline.setCycleCount(200);
+                    KeyFrame kf = new KeyFrame(Duration.millis(1), (ActionEvent event1) ->{
+                        informationBoard.setLayoutX(informationBoard.getLayoutX()- 1.9);
+                        middleBox.setPrefWidth(middleBox.getPrefWidth() - 1.9);
+                    });
+                    timeline.getKeyFrames().add(kf);
+                    timeline.play();
                     informationBoardOpened = !informationBoardOpened;
                     System.out.println("clicked on " + items.getSelectionModel().getSelectedItem());
                 }
