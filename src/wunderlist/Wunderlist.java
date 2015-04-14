@@ -7,8 +7,6 @@ package wunderlist;
 
 import java.io.IOException;
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
@@ -16,9 +14,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
@@ -29,16 +25,11 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
 /**
@@ -98,20 +89,26 @@ public class Wunderlist extends Application {
                 }
             }
         });
-        ScrollBar sb = ((ScrollBar) (items.lookupAll(".scroll-bar").toArray()[0]));
-        sb.setStyle("-fx-background-radius: 3 ; -fx-background-color: rgba(84,84,84,0.3)");
+
         items.setOnMouseClicked((MouseEvent event) -> {
             if (items.getSelectionModel().getSelectedItem() != null) {
                 if (event.getClickCount() == 2) {
                     final Timeline timeline = new Timeline();
                     timeline.setCycleCount(200);
-                    KeyFrame kf = new KeyFrame(Duration.millis(1), (ActionEvent event1) ->{
-                        informationBoard.setLayoutX(informationBoard.getLayoutX()- 1.9);
-                        middleBox.setPrefWidth(middleBox.getPrefWidth() - 1.9);
+                    KeyFrame kf = new KeyFrame(Duration.millis(1), (ActionEvent event1) -> {
+                        if (!informationBoardOpened) {
+                            informationBoard.setLayoutX(informationBoard.getLayoutX() - 1.9);
+                            middleBox.setPrefWidth(middleBox.getPrefWidth() - 1.9);
+                        } else {
+                            informationBoard.setLayoutX(informationBoard.getLayoutX() + 1.9);
+                            middleBox.setPrefWidth(middleBox.getPrefWidth() + 1.9);
+                        }
                     });
                     timeline.getKeyFrames().add(kf);
                     timeline.play();
-                    informationBoardOpened = !informationBoardOpened;
+                    timeline.setOnFinished((ActionEvent event1) -> {
+                        informationBoardOpened = !informationBoardOpened;
+                    });
                     System.out.println("clicked on " + items.getSelectionModel().getSelectedItem());
                 }
             }
@@ -130,6 +127,10 @@ public class Wunderlist extends Application {
                 Entry e = new Entry(addItemTextField.getText());
                 listOfItems.add(0, e);
                 addItemTextField.setText("");
+                if (listOfItems.size() > 12) {
+                    ScrollBar sb = ((ScrollBar) (items.lookupAll(".scroll-bar").toArray()[0]));
+                    //sb.setStyle("-fx-background-radius: 3 ; -fx-background-color: rgba(84,84,84,0.3)");
+                }
             }
 
         });
