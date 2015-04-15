@@ -30,6 +30,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -46,6 +47,7 @@ public class Wunderlist extends Application {
     AnchorPane mainFrame;
     AnchorPane informationBoard;
     Text informationBoardText;
+    CheckBox informationBoardDone;
     VBox middleBox;
     ListView<Entry> items;
     ObservableList<Entry> listOfItems;
@@ -62,14 +64,14 @@ public class Wunderlist extends Application {
         middleBox = (VBox) flowPane.lookup("#middleBox");
         informationBoard = (AnchorPane) root.lookup("#informationBoard");
         informationBoardText = (Text) informationBoard.lookup("#informationBoardText");
+        informationBoardDone = (CheckBox) informationBoard.lookup("#informationBoardDone");
         items = (ListView<Entry>) root.lookup("#items");
         items.setItems(listOfItems);
         items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
 
+            @Override
             public ListCell<Entry> call(ListView<Entry> lv) {
                 return new ListCell<Entry>() {
-
-                    private final ImageView imageView = new ImageView();
 
                     @Override
                     public void updateItem(Entry item, boolean empty) {
@@ -87,15 +89,13 @@ public class Wunderlist extends Application {
                             CheckBox cb = new CheckBox("");
                             cb.setLayoutY(10);
                             cb.setLayoutX(10);
+                            cb.selectedProperty().bindBidirectional(item.done);
                             Label label = new Label(text);
                             label.setLayoutX(cb.getLayoutX() + 30);
                             label.setLayoutY(10);
-                            Image image = new Image(getClass().getResourceAsStream("Images/AccPic.png"));
-                            imageView.setImage(image);
-                            imageView.setLayoutX(470);
-                            imageView.setLayoutY(8);
                             ap.getChildren().addAll(cb, label);
-                            setGraphic(ap);
+                            BorderPane borderPane = new BorderPane(null, null, null, null, ap);
+                            setGraphic(borderPane);
                         }
                     }
                 };
@@ -108,9 +108,12 @@ public class Wunderlist extends Application {
                 if (items.getSelectionModel().getSelectedIndex() != -1) {
                     if (oldValue != null) {
                         informationBoardText.textProperty().unbindBidirectional(oldValue.title);
+                        informationBoardDone.selectedProperty().unbindBidirectional(oldValue.done);
                     }
                     informationBoardText.setText(newValue.title.get());
                     informationBoardText.textProperty().bindBidirectional(newValue.title);
+                    informationBoardDone.setSelected(newValue.done.get());
+                    informationBoardDone.selectedProperty().bindBidirectional(newValue.done);
                 }
 
             }

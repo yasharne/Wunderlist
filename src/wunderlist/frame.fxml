@@ -83,8 +83,8 @@
                         <DropShadow color="#0000004d" />
                      </effect>
                      <children>
-                        <CheckBox layoutX="14.0" layoutY="21.0" mnemonicParsing="false" />
-                        <Text fx:id="informationBoardText" focusTraversable="true" layoutX="38.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" wrappingWidth="266.7294921875" />
+                        <CheckBox fx:id="informationBoardDone" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" />
+                        <Text fx:id="informationBoardText" focusTraversable="true" layoutX="38.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="266.7294921875" />
                      </children>
                   </AnchorPane>
                   <VBox prefHeight="510.0" prefWidth="348.0">
