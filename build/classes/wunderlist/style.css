@@ -1,3 +1,14 @@
+.root {
+    -lined-notepad:
+        linear-gradient(
+            from 0px 0px to 0px 11px,
+            repeat,
+            gainsboro,
+            gainsboro 6.25%,
+            cornsilk 6.25%,
+            cornsilk
+        );
+}
 .list-view .virtual-flow .clipped-container .sheet .list-cell:empty:even,
 .list-view .virtual-flow .clipped-container .sheet .list-cell:empty:odd{
     -fx-background-color: transparent;
@@ -13,7 +24,7 @@
 }
 .list-cell{
     -fx-padding: 2px ;
-    -fx-background-color: transparent, rgba(255, 255, 255, 0) ;
+    -fx-background-color: transparent, white ;
     -fx-background-insets: 0px, 2px ;
 }
 .list-view .virtual-flow:vertical{
@@ -21,7 +32,7 @@
 }
 .list-view .virtual-flow .scroll-bar:vertical ,
 .list-view .virtual-flow .scroll-bar:horizontal *{
-    
+
     -fx-background-color: rgba(186, 186, 186, 0);
     -fx-max-width: 10;
     -fx-pref-width: 10;
@@ -37,4 +48,14 @@
 .list-view .virtual-flow .scroll-bar:vertical .decrement-button .decrement-arrow,
 .list-view .virtual-flow .scroll-bar:vertical .increment-button .increment-arrow{
     -fx-background-color: transparent;
+}
+.text-area .content {
+    -fx-background-color: -lined-notepad;
+}
+
+.text-area:focused .content {
+    -fx-background-color:
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        -lined-notepad;
 }

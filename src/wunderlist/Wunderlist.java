@@ -11,6 +11,9 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,7 +32,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 /**
@@ -40,6 +45,7 @@ public class Wunderlist extends Application {
 
     AnchorPane mainFrame;
     AnchorPane informationBoard;
+    Text informationBoardText;
     VBox middleBox;
     ListView<Entry> items;
     ObservableList<Entry> listOfItems;
@@ -55,41 +61,60 @@ public class Wunderlist extends Application {
         FlowPane flowPane = (FlowPane) mainFrame.lookup("#flowPane");
         middleBox = (VBox) flowPane.lookup("#middleBox");
         informationBoard = (AnchorPane) root.lookup("#informationBoard");
+        informationBoardText = (Text) informationBoard.lookup("#informationBoardText");
         items = (ListView<Entry>) root.lookup("#items");
         items.setItems(listOfItems);
-        items.setCellFactory(lv -> new ListCell<Entry>() {
+        items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
 
-            private final ImageView imageView = new ImageView();
+            public ListCell<Entry> call(ListView<Entry> lv) {
+                return new ListCell<Entry>() {
 
-            @Override
-            public void updateItem(Entry item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
+                    private final ImageView imageView = new ImageView();
 
-                    setText(null);
-                    setGraphic(null);
+                    @Override
+                    public void updateItem(Entry item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
 
-                } else {
-                    String text = item.getTitle();
-                    setText(null);
-                    AnchorPane ap = new AnchorPane();
-                    ap.setPrefHeight(40);
-                    CheckBox cb = new CheckBox("");
-                    cb.setLayoutY(10);
-                    cb.setLayoutX(10);
-                    Label label = new Label(text);
-                    label.setLayoutX(cb.getLayoutX() + 30);
-                    label.setLayoutY(10);
-                    Image image = new Image(getClass().getResourceAsStream("Images/AccPic.png"));
-                    imageView.setImage(image);
-                    imageView.setLayoutX(470);
-                    imageView.setLayoutY(8);
-                    ap.getChildren().addAll(cb, label);
-                    setGraphic(ap);
-                }
+                            setText(null);
+                            setGraphic(null);
+
+                        } else {
+                            String text = item.title.get();
+                            setText(null);
+                            AnchorPane ap = new AnchorPane();
+                            ap.setPrefHeight(40);
+                            CheckBox cb = new CheckBox("");
+                            cb.setLayoutY(10);
+                            cb.setLayoutX(10);
+                            Label label = new Label(text);
+                            label.setLayoutX(cb.getLayoutX() + 30);
+                            label.setLayoutY(10);
+                            Image image = new Image(getClass().getResourceAsStream("Images/AccPic.png"));
+                            imageView.setImage(image);
+                            imageView.setLayoutX(470);
+                            imageView.setLayoutY(8);
+                            ap.getChildren().addAll(cb, label);
+                            setGraphic(ap);
+                        }
+                    }
+                };
             }
         });
+        items.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Entry>() {
 
+            @Override
+            public void changed(ObservableValue<? extends Entry> observable, Entry oldValue, Entry newValue) {
+                if (items.getSelectionModel().getSelectedIndex() != -1) {
+                    if (oldValue != null) {
+                        informationBoardText.textProperty().unbindBidirectional(oldValue.title);
+                    }
+                    informationBoardText.setText(newValue.title.get());
+                    informationBoardText.textProperty().bindBidirectional(newValue.title);
+                }
+
+            }
+        });
         items.setOnMouseClicked((MouseEvent event) -> {
             if (items.getSelectionModel().getSelectedItem() != null) {
                 if (event.getClickCount() == 2) {
@@ -115,22 +140,11 @@ public class Wunderlist extends Application {
 
         });
         TextField addItemTextField = (TextField) middleBox.lookup("#addItemTextField");
-        final BooleanProperty firstTime = new SimpleBooleanProperty(true);
-        addItemTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue && firstTime.get()) {
-                mainFrame.requestFocus();
-                firstTime.setValue(false);
-            }
-        });
         addItemTextField.setOnAction((ActionEvent event) -> {
             if (addItemTextField.getText().length() > 0) {
                 Entry e = new Entry(addItemTextField.getText());
                 listOfItems.add(0, e);
                 addItemTextField.setText("");
-                if (listOfItems.size() > 12) {
-                    ScrollBar sb = ((ScrollBar) (items.lookupAll(".scroll-bar").toArray()[0]));
-                    //sb.setStyle("-fx-background-radius: 3 ; -fx-background-color: rgba(84,84,84,0.3)");
-                }
             }
 
         });

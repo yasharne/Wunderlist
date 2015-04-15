@@ -6,7 +6,8 @@
 package wunderlist;
 
 import java.util.Calendar;
-import java.util.Date;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -16,21 +17,36 @@ import javafx.beans.property.StringProperty;
  */
 public class Entry {
 
-    private String title;
+    public StringProperty title;
+    private String note;
+    public BooleanProperty done;
     private Calendar createTime;
     private Calendar dueDate;
 
     public Entry(String title) {
-        this.title = title;
+        this.title = new SimpleStringProperty(title);
         createTime = Calendar.getInstance();
+        this.done = new SimpleBooleanProperty(false);
         System.out.println(createTime.getTime());
         System.out.println(title);
     }
-
-    public String getTitle() {
-        return this.title;
+    
+    public String getNote(){
+        return this.note;
+    }
+    
+    public void setNote(String note){
+        this.note = note;
+    }
+    
+    public BooleanProperty getDone(){
+        return this.done;
     }
 
+    public void setDone(BooleanProperty done){
+        this.done = done;
+    }
+    
     public String getDuDate() {
 
         if (dueDate != null) {
@@ -42,5 +58,7 @@ public class Entry {
     public void setDueDate(Calendar dueDate) {
         this.dueDate = dueDate;
     }
+    
+    
 
 }
