@@ -18,25 +18,18 @@ import javafx.beans.property.StringProperty;
 public class Entry {
 
     public StringProperty title;
-    private String note;
+    public StringProperty note;
     public BooleanProperty done;
     private Calendar createTime;
     private Calendar dueDate;
 
     public Entry(String title) {
         this.title = new SimpleStringProperty(title);
+        this.note = new SimpleStringProperty("");
         createTime = Calendar.getInstance();
         this.done = new SimpleBooleanProperty(false);
-        System.out.println(createTime.getTime());
-        System.out.println(title);
-    }
-    
-    public String getNote(){
-        return this.note;
-    }
-    
-    public void setNote(String note){
-        this.note = note;
+        //System.out.println(createTime.getTime());
+        //System.out.println(title);
     }
     
     public BooleanProperty getDone(){

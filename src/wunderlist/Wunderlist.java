@@ -11,12 +11,14 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,6 +27,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -46,8 +49,9 @@ public class Wunderlist extends Application {
 
     AnchorPane mainFrame;
     AnchorPane informationBoard;
-    Text informationBoardText;
+    TextField informationBoardText;
     CheckBox informationBoardDone;
+    TextArea informationBoardNote;
     VBox middleBox;
     ListView<Entry> items;
     ObservableList<Entry> listOfItems;
@@ -63,8 +67,9 @@ public class Wunderlist extends Application {
         FlowPane flowPane = (FlowPane) mainFrame.lookup("#flowPane");
         middleBox = (VBox) flowPane.lookup("#middleBox");
         informationBoard = (AnchorPane) root.lookup("#informationBoard");
-        informationBoardText = (Text) informationBoard.lookup("#informationBoardText");
+        informationBoardText = (TextField) informationBoard.lookup("#informationBoardText");
         informationBoardDone = (CheckBox) informationBoard.lookup("#informationBoardDone");
+        informationBoardNote = (TextArea) informationBoard.lookup("#informationBoardNote");
         items = (ListView<Entry>) root.lookup("#items");
         items.setItems(listOfItems);
         items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
@@ -93,6 +98,7 @@ public class Wunderlist extends Application {
                             Label label = new Label(text);
                             label.setLayoutX(cb.getLayoutX() + 30);
                             label.setLayoutY(10);
+                            label.textProperty().bindBidirectional(item.title);
                             ap.getChildren().addAll(cb, label);
                             BorderPane borderPane = new BorderPane(null, null, null, null, ap);
                             setGraphic(borderPane);
@@ -101,21 +107,25 @@ public class Wunderlist extends Application {
                 };
             }
         });
-        items.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Entry>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Entry> observable, Entry oldValue, Entry newValue) {
-                if (items.getSelectionModel().getSelectedIndex() != -1) {
-                    if (oldValue != null) {
-                        informationBoardText.textProperty().unbindBidirectional(oldValue.title);
-                        informationBoardDone.selectedProperty().unbindBidirectional(oldValue.done);
-                    }
-                    informationBoardText.setText(newValue.title.get());
-                    informationBoardText.textProperty().bindBidirectional(newValue.title);
-                    informationBoardDone.setSelected(newValue.done.get());
-                    informationBoardDone.selectedProperty().bindBidirectional(newValue.done);
+        items.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Entry> observable, Entry oldValue, Entry newValue) -> {
+            if (items.getSelectionModel().getSelectedIndex() != -1) {
+                if (oldValue != null) {
+                    informationBoardText.textProperty().unbindBidirectional(oldValue.title);
+                    informationBoardDone.selectedProperty().unbindBidirectional(oldValue.done);
+                    informationBoardNote.textProperty().unbindBidirectional(oldValue.note);
                 }
-
+                informationBoardText.setText(newValue.title.get());
+                informationBoardText.textProperty().bindBidirectional(newValue.title);
+                informationBoardText.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
+                    items.getSelectionModel().selectedItemProperty().get().title = new SimpleStringProperty(newValue1);
+                });
+                informationBoardDone.setSelected(newValue.done.get());
+                informationBoardDone.selectedProperty().bindBidirectional(newValue.done);
+                informationBoardNote.setText(newValue.note.get());
+                informationBoardNote.textProperty().bindBidirectional(newValue.note);
+                informationBoardNote.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
+                    items.getSelectionModel().selectedItemProperty().get().note = new SimpleStringProperty(newValue1);
+                });
             }
         });
         items.setOnMouseClicked((MouseEvent event) -> {
