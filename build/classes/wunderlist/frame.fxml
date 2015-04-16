@@ -84,7 +84,8 @@
                      </effect>
                      <children>
                         <CheckBox fx:id="informationBoardDone" layoutX="14.0" layoutY="21.0" mnemonicParsing="false" />
-                        <TextField fx:id="informationBoardText" layoutX="38.0" layoutY="18.0" prefHeight="25.0" prefWidth="280.0" />
+                        <TextField fx:id="informationBoardText" layoutX="38.0" layoutY="18.0" prefHeight="25.0" prefWidth="263.0" />
+                        <ImageView fx:id="informationBoardFavorite" fitHeight="25.0" fitWidth="27.0" layoutX="312.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
                   <VBox prefHeight="510.0" prefWidth="348.0">
@@ -96,6 +97,10 @@
                            <effect>
                               <DropShadow color="#00000034" />
                            </effect>
+                           <children>
+                              <DatePicker fx:id="informationBoardDueDate" prefHeight="40.0" prefWidth="330.0" promptText="Set due date" showWeekNumbers="true" />
+                              <DatePicker fx:id="informationBoardReminMe" prefHeight="40.0" prefWidth="330.0" promptText="Remind me" showWeekNumbers="true" />
+                           </children>
                         </VBox>
                         <ListView prefHeight="230.0" prefWidth="380.0" style="-fx-background-color: white;">
                            <VBox.margin>

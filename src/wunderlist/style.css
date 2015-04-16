@@ -9,6 +9,9 @@
             cornsilk
         );
 }
+.text-field{
+    -fx-background-color: rgba(84, 84, 84, 0);
+}
 .list-view .virtual-flow .clipped-container .sheet .list-cell:empty:even,
 .list-view .virtual-flow .clipped-container .sheet .list-cell:empty:odd{
     -fx-background-color: transparent;

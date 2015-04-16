@@ -10,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -52,6 +53,7 @@ public class Wunderlist extends Application {
     TextField informationBoardText;
     CheckBox informationBoardDone;
     TextArea informationBoardNote;
+    ImageView informationBoardFavorite;
     VBox middleBox;
     ListView<Entry> items;
     ObservableList<Entry> listOfItems;
@@ -70,6 +72,7 @@ public class Wunderlist extends Application {
         informationBoardText = (TextField) informationBoard.lookup("#informationBoardText");
         informationBoardDone = (CheckBox) informationBoard.lookup("#informationBoardDone");
         informationBoardNote = (TextArea) informationBoard.lookup("#informationBoardNote");
+        informationBoardFavorite = (ImageView) informationBoard.lookup("#informationBoardFavorite");
         items = (ListView<Entry>) root.lookup("#items");
         items.setItems(listOfItems);
         items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
@@ -87,6 +90,16 @@ public class Wunderlist extends Application {
                             setGraphic(null);
 
                         } else {
+                            ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite.get() ? "1" : "0") + ".png")));
+                            iv.setOnMouseClicked((MouseEvent event) -> {
+                                items.getSelectionModel().selectedItemProperty().get().favorite.set(!items.getSelectionModel().selectedItemProperty().get().favorite.get());
+                                iv.setImage(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite.get() ? "1" : "0") + ".png")));
+                                //informationBoardFavorite.setImage(iv.getImage());
+                                //iv.imageProperty().bindBidirectional(new Image(getClass().getResourceAsStream("Images/favorite"+(item.favorite.get()?"1":"0")+".png")));
+                                event.consume();
+                            });
+                            iv.setFitHeight(25);
+                            iv.setFitWidth(25);
                             String text = item.title.get();
                             setText(null);
                             AnchorPane ap = new AnchorPane();
@@ -100,7 +113,7 @@ public class Wunderlist extends Application {
                             label.setLayoutY(10);
                             label.textProperty().bindBidirectional(item.title);
                             ap.getChildren().addAll(cb, label);
-                            BorderPane borderPane = new BorderPane(null, null, null, null, ap);
+                            BorderPane borderPane = new BorderPane(null, null, iv, null, ap);
                             setGraphic(borderPane);
                         }
                     }
@@ -113,19 +126,24 @@ public class Wunderlist extends Application {
                     informationBoardText.textProperty().unbindBidirectional(oldValue.title);
                     informationBoardDone.selectedProperty().unbindBidirectional(oldValue.done);
                     informationBoardNote.textProperty().unbindBidirectional(oldValue.note);
+                    informationBoardFavorite.imageProperty().unbindBidirectional(oldValue.favoriteImage);
                 }
                 informationBoardText.setText(newValue.title.get());
                 informationBoardText.textProperty().bindBidirectional(newValue.title);
                 informationBoardText.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
-                    items.getSelectionModel().selectedItemProperty().get().title = new SimpleStringProperty(newValue1);
+                    items.getSelectionModel().selectedItemProperty().get().title.set(newValue1);
                 });
                 informationBoardDone.setSelected(newValue.done.get());
                 informationBoardDone.selectedProperty().bindBidirectional(newValue.done);
                 informationBoardNote.setText(newValue.note.get());
                 informationBoardNote.textProperty().bindBidirectional(newValue.note);
                 informationBoardNote.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
-                    items.getSelectionModel().selectedItemProperty().get().note = new SimpleStringProperty(newValue1);
+                    items.getSelectionModel().selectedItemProperty().get().note.set(newValue1);
                 });
+                //----------------set suitable image on favorite image
+                newValue.favoriteImage.set(new Image(getClass().getResourceAsStream("Images/favorite" + (newValue.favorite.get() ? "1" : "0") + ".png")));
+                informationBoardFavorite.imageProperty().bindBidirectional(newValue.favoriteImage);
+                //System.out.println(newValue.favoriteImage);
             }
         });
         items.setOnMouseClicked((MouseEvent event) -> {
