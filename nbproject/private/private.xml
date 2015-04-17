@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/EntryListWrapper.java</file>
             <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/Wunderlist.java</file>
+            <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/FrameController.java</file>
+            <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/frame.fxml</file>
+            <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/util/LocalDateAdapter.java</file>
             <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/Entry.java</file>
             <file>file:/home/yashar/NetBeansProjects/Wunderlist/src/wunderlist/style.css</file>
         </group>

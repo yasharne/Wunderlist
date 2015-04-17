@@ -8,7 +8,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 
-<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="960.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wunderlist.FrameController">
    <children>
       <VBox prefHeight="640.0" prefWidth="280.0" style="-fx-background-color: white;">
          <children>
@@ -21,6 +21,11 @@
                   </ImageView>
                   <MenuButton graphicTextGap="5.0" layoutX="33.0" layoutY="3.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-background-color: white;" text="Yashar">
                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#handleNew" text="New" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleOpen" text="Open..." />
+                        <MenuItem mnemonicParsing="false" onAction="#handleSave" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleSaveAs" text="Save As..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
                       <MenuItem disable="true" mnemonicParsing="false" text="Last synced a minute ago" />
                       <MenuItem mnemonicParsing="false" text="Sync now" />
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -36,6 +41,8 @@
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem disable="true" mnemonicParsing="false" text="yasharnesabian@yahoo.com" />
                         <MenuItem mnemonicParsing="false" text="Sign Out" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#handleExit" text="Exit" />
                     </items>
                   </MenuButton>
                </children>
