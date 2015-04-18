@@ -5,6 +5,7 @@
  */
 package wunderlist;
 
+import wunderlist.model.Entry;
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
@@ -42,6 +43,7 @@ import javafx.util.Duration;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import wunderlist.model.Category;
 
 /**
  *
@@ -51,13 +53,16 @@ public class Wunderlist extends Application {
 
     AnchorPane mainFrame;
     AnchorPane informationBoard;
+    AnchorPane addNewCategory;
     TextField informationBoardText;
     CheckBox informationBoardDone;
     TextArea informationBoardNote;
     ImageView informationBoardFavorite;
     VBox middleBox;
     ListView<Entry> items;
-    public static ObservableList<Entry> listOfItems;
+    ListView<Category> categories;
+    public ObservableList<Entry> listOfItems;
+    public ObservableList<Category> listOfCategories;
     boolean informationBoardOpened = false;
     private Stage primaryStage;
 
@@ -66,12 +71,14 @@ public class Wunderlist extends Application {
 
         this.primaryStage = primaryStage;
         listOfItems = FXCollections.observableArrayList();
+        listOfCategories = FXCollections.observableArrayList();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Wunderlist.class.getResource("frame.fxml"));
         AnchorPane root = (AnchorPane) loader.load();
         //Parent root = loader.load(getClass().getResource("frame.fxml"));
         mainFrame = (AnchorPane) root.lookup("#mainFrame");
         mainFrame.setStyle("-fx-background-image: url('wunderlist/Images/Backgrounds/06.jpg'); -fx-background-repeat: stretch; -fx-background-position: center center");
+        addNewCategory = (AnchorPane) root.lookup("#addNewCategory");
         FlowPane flowPane = (FlowPane) mainFrame.lookup("#flowPane");
         middleBox = (VBox) flowPane.lookup("#middleBox");
         informationBoard = (AnchorPane) root.lookup("#informationBoard");
@@ -79,6 +86,8 @@ public class Wunderlist extends Application {
         informationBoardDone = (CheckBox) informationBoard.lookup("#informationBoardDone");
         informationBoardNote = (TextArea) informationBoard.lookup("#informationBoardNote");
         informationBoardFavorite = (ImageView) informationBoard.lookup("#informationBoardFavorite");
+        categories = (ListView<Category>) root.lookup("#categories");
+        categories.setItems(listOfCategories);
         items = (ListView<Entry>) root.lookup("#items");
         items.setItems(listOfItems);
         items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
@@ -98,7 +107,7 @@ public class Wunderlist extends Application {
                         } else {
                             ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite().get() ? "1" : "0") + ".png")));
                             iv.setOnMouseClicked((MouseEvent event) -> {
-                                items.getSelectionModel().selectedItemProperty().get().favorite().set(!items.getSelectionModel().selectedItemProperty().get().favorite().get());
+                                items.getSelectionModel().selectedItemProperty().get().setFavorite(!items.getSelectionModel().selectedItemProperty().get().favorite().get());
                                 iv.setImage(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite().get() ? "1" : "0") + ".png")));
                                 //informationBoardFavorite.setImage(iv.getImage());
                                 //iv.imageProperty().bindBidirectional(new Image(getClass().getResourceAsStream("Images/favorite"+(item.favorite.get()?"1":"0")+".png")));
@@ -134,17 +143,17 @@ public class Wunderlist extends Application {
                     informationBoardNote.textProperty().unbindBidirectional(oldValue.note());
                     //informationBoardFavorite.imageProperty().unbindBidirectional(oldValue.favoriteImage());
                 }
-                informationBoardText.setText(newValue.title().get());
+                informationBoardText.setText(newValue.getTitle());
                 informationBoardText.textProperty().bindBidirectional(newValue.title());
                 informationBoardText.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
-                    items.getSelectionModel().selectedItemProperty().get().title().set(newValue1);
+                    items.getSelectionModel().selectedItemProperty().get().setTitle(newValue1);
                 });
                 informationBoardDone.setSelected(newValue.done().get());
                 informationBoardDone.selectedProperty().bindBidirectional(newValue.done());
                 informationBoardNote.setText(newValue.note().get());
                 informationBoardNote.textProperty().bindBidirectional(newValue.note());
                 informationBoardNote.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
-                    items.getSelectionModel().selectedItemProperty().get().note().set(newValue1);
+                    items.getSelectionModel().selectedItemProperty().get().setNote(newValue1);
                 });
                 //----------------set suitable image on favorite image
                 ///newValue.favoriteImage().set(new Image(getClass().getResourceAsStream("Images/favorite" + (newValue.favorite().get() ? "1" : "0") + ".png")));
@@ -170,7 +179,6 @@ public class Wunderlist extends Application {
                     timeline.setOnFinished((ActionEvent event1) -> {
                         informationBoardOpened = !informationBoardOpened;
                     });
-                    System.out.println("clicked on " + items.getSelectionModel().getSelectedItem());
                 }
             }
 

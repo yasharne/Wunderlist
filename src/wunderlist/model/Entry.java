@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package wunderlist;
+package wunderlist.model;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -31,6 +31,10 @@ public class Entry {
     private ObjectProperty<LocalDate> createTime;
     private Calendar dueDate;
 
+    public Entry(){
+        this("");
+    }
+    
     public Entry(String title) {
         this.title = new SimpleStringProperty(title);
         this.note = new SimpleStringProperty("");

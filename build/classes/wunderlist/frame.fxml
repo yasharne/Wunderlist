@@ -50,6 +50,12 @@
                   <DropShadow color="#0000004d" />
                </effect>
             </AnchorPane>
+            <ListView fx:id="categories" prefHeight="560.0" prefWidth="280.0" />
+            <AnchorPane fx:id="addNewCategory" prefHeight="40.0" prefWidth="280.0" style="-fx-background-color: white;">
+               <effect>
+                  <DropShadow color="#0000004d" />
+               </effect>
+            </AnchorPane>
          </children>
          <effect>
             <DropShadow color="#00000066" />
