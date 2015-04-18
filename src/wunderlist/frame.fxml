@@ -55,6 +55,14 @@
                <effect>
                   <DropShadow color="#0000004d" />
                </effect>
+               <children>
+                  <TextField fx:id="addTextField" editable="false" layoutX="14.0" layoutY="8.0" prefHeight="25.0" prefWidth="255.0" visible="false" />
+                  <ImageView fx:id="addImage" fitHeight="25.0" fitWidth="25.0" layoutX="133.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/add.png" />
+                     </image>
+                  </ImageView>
+               </children>
             </AnchorPane>
          </children>
          <effect>

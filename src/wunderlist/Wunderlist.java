@@ -9,6 +9,7 @@ import wunderlist.model.Entry;
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -24,6 +25,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -58,6 +60,8 @@ public class Wunderlist extends Application {
     CheckBox informationBoardDone;
     TextArea informationBoardNote;
     ImageView informationBoardFavorite;
+    ImageView addImage;
+    TextField addTextField;
     VBox middleBox;
     ListView<Entry> items;
     ListView<Category> categories;
@@ -79,6 +83,33 @@ public class Wunderlist extends Application {
         mainFrame = (AnchorPane) root.lookup("#mainFrame");
         mainFrame.setStyle("-fx-background-image: url('wunderlist/Images/Backgrounds/06.jpg'); -fx-background-repeat: stretch; -fx-background-position: center center");
         addNewCategory = (AnchorPane) root.lookup("#addNewCategory");
+        addImage = (ImageView) root.lookup("#addImage");
+        addTextField = (TextField) root.lookup("#addTextField");
+        addImage.setOnMouseClicked((MouseEvent event) -> {
+            FadeTransition fadeTransition = new FadeTransition(new Duration(150), addImage);
+            fadeTransition.setFromValue(1);
+            fadeTransition.setToValue(0);
+            fadeTransition.play();
+            fadeTransition.setOnFinished((ActionEvent event1) -> {
+                addTextField.setVisible(true);
+                addTextField.setEditable(true);
+                addTextField.setPromptText("Enter new Category");
+                addTextField.toFront();
+            });
+        });
+        addTextField.setOnAction((ActionEvent event) -> {
+            Category category = new Category(addTextField.getText());
+            listOfCategories.add(category);
+            addTextField.setEditable(false);
+            addTextField.setVisible(false);
+            addTextField.setPromptText("");
+            addTextField.setText("");
+            FadeTransition fadeTransition = new FadeTransition(new Duration(150), addImage);
+            fadeTransition.setFromValue(0);
+            fadeTransition.setToValue(1);
+            fadeTransition.play();
+        });
+
         FlowPane flowPane = (FlowPane) mainFrame.lookup("#flowPane");
         middleBox = (VBox) flowPane.lookup("#middleBox");
         informationBoard = (AnchorPane) root.lookup("#informationBoard");
@@ -88,6 +119,32 @@ public class Wunderlist extends Application {
         informationBoardFavorite = (ImageView) informationBoard.lookup("#informationBoardFavorite");
         categories = (ListView<Category>) root.lookup("#categories");
         categories.setItems(listOfCategories);
+        categories.setCellFactory(lv -> new ListCell<Category>() {
+            @Override
+            public void updateItem(Category item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    setText(null);
+                    Label title = new Label(item.getTitle());
+                    Label size = new Label(item.getList().size() + "");
+                    size.textProperty().bind(item.getSize());
+                    BorderPane bp = new BorderPane(null, null, size, null, title);
+                    setGraphic(bp);
+                }
+            }
+        });
+        categories.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends Category> observable, Category oldValue, Category newValue) -> {
+            if (categories.getSelectionModel().getSelectedIndex() != -1) {
+                if (oldValue != null) {
+
+                }
+                items.setItems(newValue.getList());
+            }
+        });
+
         items = (ListView<Entry>) root.lookup("#items");
         items.setItems(listOfItems);
         items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
@@ -187,7 +244,17 @@ public class Wunderlist extends Application {
         addItemTextField.setOnAction((ActionEvent event) -> {
             if (addItemTextField.getText().length() > 0) {
                 Entry e = new Entry(addItemTextField.getText());
-                listOfItems.add(0, e);
+                //listOfItems.add(0, e);
+                if (categories.getSelectionModel().getSelectedItem() != null) {
+                    categories.getSelectionModel().getSelectedItem().add(e);
+                } else {
+                    Alert alert = new Alert(AlertType.INFORMATION);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("No Category to add your Entry");
+                    alert.setContentText("First create a category at down left!");
+                    alert.showAndWait();
+
+                }
                 addItemTextField.setText("");
             }
 

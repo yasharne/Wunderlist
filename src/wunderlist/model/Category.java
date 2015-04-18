@@ -5,6 +5,8 @@
  */
 package wunderlist.model;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -17,7 +19,7 @@ import javafx.collections.ObservableList;
 public class Category {
     
     private StringProperty title;
-    public ObservableList<Entry> listOfItems;
+    private ObservableList<Entry> listOfItems;
     
     public Category(){
         
@@ -28,6 +30,7 @@ public class Category {
     public Category(String title){
         this.title = new SimpleStringProperty(title);
         listOfItems = FXCollections.observableArrayList();
+        
     }
     
     public String getTitle(){
@@ -40,6 +43,19 @@ public class Category {
     
     public StringProperty title(){
         return this.title;
+    }
+    
+    public StringProperty getSize(){
+        return new SimpleStringProperty(this.listOfItems.size() + "");
+    }
+    
+    
+    public ObservableList<Entry> getList(){
+        return this.listOfItems;
+    }
+    
+    public void add(Entry entry){
+        this.listOfItems.add(0, entry);
     }
     
     
