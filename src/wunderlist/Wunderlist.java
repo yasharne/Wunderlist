@@ -8,6 +8,8 @@ package wunderlist;
 import wunderlist.model.Entry;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.prefs.Preferences;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -25,6 +27,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -63,9 +66,11 @@ public class Wunderlist extends Application {
     ImageView addImage;
     TextField addTextField;
     VBox middleBox;
+    DatePicker informationBoardDueDate;
+    DatePicker informationBoardRemindMe;
     ListView<Entry> items;
     ListView<Category> categories;
-    public ObservableList<Entry> listOfItems;
+    public ObservableList<Entry> inbox;
     public ObservableList<Category> listOfCategories;
     boolean informationBoardOpened = false;
     private Stage primaryStage;
@@ -74,7 +79,7 @@ public class Wunderlist extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         this.primaryStage = primaryStage;
-        listOfItems = FXCollections.observableArrayList();
+        inbox = FXCollections.observableArrayList();
         listOfCategories = FXCollections.observableArrayList();
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Wunderlist.class.getResource("frame.fxml"));
@@ -117,6 +122,8 @@ public class Wunderlist extends Application {
         informationBoardDone = (CheckBox) informationBoard.lookup("#informationBoardDone");
         informationBoardNote = (TextArea) informationBoard.lookup("#informationBoardNote");
         informationBoardFavorite = (ImageView) informationBoard.lookup("#informationBoardFavorite");
+        informationBoardDueDate = (DatePicker) root.lookup("#informationBoardDueDate");
+        informationBoardRemindMe = (DatePicker) root.lookup("#informationBoardRemindMe");
         categories = (ListView<Category>) root.lookup("#categories");
         categories.setItems(listOfCategories);
         categories.setCellFactory(lv -> new ListCell<Category>() {
@@ -146,7 +153,7 @@ public class Wunderlist extends Application {
         });
 
         items = (ListView<Entry>) root.lookup("#items");
-        items.setItems(listOfItems);
+        items.setItems(inbox);
         items.setCellFactory(new Callback<ListView<Entry>, ListCell<Entry>>() {
 
             @Override
@@ -198,6 +205,8 @@ public class Wunderlist extends Application {
                     informationBoardText.textProperty().unbindBidirectional(oldValue.title());
                     informationBoardDone.selectedProperty().unbindBidirectional(oldValue.done());
                     informationBoardNote.textProperty().unbindBidirectional(oldValue.note());
+                    informationBoardDueDate.valueProperty().unbindBidirectional(oldValue.dueDate());
+                    informationBoardRemindMe.valueProperty().unbindBidirectional(oldValue.remindDate());
                     //informationBoardFavorite.imageProperty().unbindBidirectional(oldValue.favoriteImage());
                 }
                 informationBoardText.setText(newValue.getTitle());
@@ -212,6 +221,10 @@ public class Wunderlist extends Application {
                 informationBoardNote.textProperty().addListener((ObservableValue<? extends String> observable1, String oldValue1, String newValue1) -> {
                     items.getSelectionModel().selectedItemProperty().get().setNote(newValue1);
                 });
+                informationBoardDueDate.setValue(newValue.getDueTime());
+                informationBoardDueDate.valueProperty().bindBidirectional(newValue.dueDate());
+                informationBoardRemindMe.setValue(newValue.getremindTime());
+                informationBoardRemindMe.valueProperty().bindBidirectional(newValue.remindDate());
                 //----------------set suitable image on favorite image
                 ///newValue.favoriteImage().set(new Image(getClass().getResourceAsStream("Images/favorite" + (newValue.favorite().get() ? "1" : "0") + ".png")));
                 //informationBoardFavorite.imageProperty().bindBidirectional(newValue.favoriteImage());
@@ -247,14 +260,8 @@ public class Wunderlist extends Application {
                 //listOfItems.add(0, e);
                 if (categories.getSelectionModel().getSelectedItem() != null) {
                     categories.getSelectionModel().getSelectedItem().add(e);
-                } else {
-                    Alert alert = new Alert(AlertType.INFORMATION);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("No Category to add your Entry");
-                    alert.setContentText("First create a category at down left!");
-                    alert.showAndWait();
-
                 }
+                inbox.add(0, e);
                 addItemTextField.setText("");
             }
 
@@ -263,6 +270,7 @@ public class Wunderlist extends Application {
         primaryStage.setScene(scene);
         FrameController fc = loader.getController();
         fc.setMainApp(this);
+        primaryStage.setResizable(false);
         primaryStage.show();
 
     }
@@ -291,9 +299,15 @@ public class Wunderlist extends Application {
             JAXBContext context = JAXBContext
                     .newInstance(EntryListWrapper.class);
             Unmarshaller um = context.createUnmarshaller();
+            //CategoryListWrapper wrapper = (CategoryListWrapper) um.unmarshal(file);
             EntryListWrapper wrapper = (EntryListWrapper) um.unmarshal(file);
-            listOfItems.clear();
-            listOfItems.addAll(wrapper.getEntries());
+            //listOfItems.clear();
+            //listOfCategories.clear();
+            inbox.clear();
+            
+            //listOfItems.addAll(wrapper.getEntries());
+            //listOfCategories.addAll(wrapper.getCategories());
+            inbox.addAll(wrapper.getEntries());
 
             setEntryFilePath(file);
 
@@ -313,7 +327,9 @@ public class Wunderlist extends Application {
             Marshaller m = context.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             EntryListWrapper wrapper = new EntryListWrapper();
-            wrapper.setEntries(listOfItems);
+            //CategoryListWrapper wrapper = new CategoryListWrapper();
+            wrapper.setEntries(inbox);
+            //wrapper.setCategories(listOfCategories);
 
             m.marshal(wrapper, file);
 

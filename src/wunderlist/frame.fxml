@@ -50,7 +50,15 @@
                   <DropShadow color="#0000004d" />
                </effect>
             </AnchorPane>
-            <ListView fx:id="categories" prefHeight="560.0" prefWidth="280.0" />
+            <BorderPane onMouseClicked="#inboxClicked" prefHeight="40.0" prefWidth="280.0">
+               <left>
+                  <Label text="Inbox" BorderPane.alignment="CENTER" />
+               </left>
+               <right>
+                  <Label fx:id="inboxBoardNumber" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+            <ListView fx:id="categories" prefHeight="520.0" prefWidth="280.0" />
             <AnchorPane fx:id="addNewCategory" prefHeight="40.0" prefWidth="280.0" style="-fx-background-color: white;">
                <effect>
                   <DropShadow color="#0000004d" />
@@ -120,7 +128,7 @@
                            </effect>
                            <children>
                               <DatePicker fx:id="informationBoardDueDate" prefHeight="40.0" prefWidth="330.0" promptText="Set due date" showWeekNumbers="true" />
-                              <DatePicker fx:id="informationBoardReminMe" prefHeight="40.0" prefWidth="330.0" promptText="Remind me" showWeekNumbers="true" />
+                              <DatePicker fx:id="informationBoardRemindMe" prefHeight="40.0" prefWidth="330.0" promptText="Remind me" showWeekNumbers="true" />
                            </children>
                         </VBox>
                         <ListView prefHeight="230.0" prefWidth="380.0" style="-fx-background-color: white;">

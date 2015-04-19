@@ -29,19 +29,23 @@ public class Entry {
     private BooleanProperty favorite;
     //private ObjectProperty<Image> favoriteImage;
     private ObjectProperty<LocalDate> createTime;
-    private Calendar dueDate;
+    private ObjectProperty<LocalDate> dueDate;
+    private ObjectProperty<LocalDate> remindMe;
 
-    public Entry(){
+    public Entry() {
         this("");
     }
-    
+
     public Entry(String title) {
         this.title = new SimpleStringProperty(title);
         this.note = new SimpleStringProperty("");
         this.createTime = new SimpleObjectProperty<>(LocalDate.now());
+        this.dueDate = new SimpleObjectProperty<>(LocalDate.now());
+        this.remindMe = new SimpleObjectProperty<LocalDate>();
         //createTime = Calendar.getInstance();
         this.done = new SimpleBooleanProperty(false);
         this.favorite = new SimpleBooleanProperty(false);
+
         //this.favoriteImage = new SimpleObjectProperty<>();
         //this.favoriteImage = new SimpleObjectProperty<Image>(new Image(getClass().getResourceAsStream("Images/favorite" + (this.favorite.get() ? "1" : "0") + ".png")));
     }
@@ -97,15 +101,42 @@ public class Entry {
         return this.favorite;
     }
 
-    //--------------------------------------------
-    /*   public Image getFavoriteImage() {
-    return this.favoriteImage.get();
+    //-------------------------------------------
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public LocalDate getDueTime() {
+        return this.dueDate.get();
     }
-    
-    public void setFavoriteImage(Image favoriteImage) {
-    this.favoriteImage.set(favoriteImage);
-    }*/
 
+    public void setDueDate(LocalDate dueDate) {
+        this.dueDate.set(dueDate);
+    }
+
+    public ObjectProperty<LocalDate> dueDate() {
+        return this.dueDate;
+    }
+
+    //--------------------------------------------
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    public LocalDate getremindTime() {
+        return this.remindMe.get();
+    }
+
+    public void setremindDate(LocalDate remindDate) {
+        this.remindMe.set(remindDate);
+    }
+
+    public ObjectProperty<LocalDate> remindDate() {
+        return this.remindMe;
+    }
+
+    //---------------------------------------------
+    /*   public Image getFavoriteImage() {
+     return this.favoriteImage.get();
+     }
+    
+     public void setFavoriteImage(Image favoriteImage) {
+     this.favoriteImage.set(favoriteImage);
+     }*/
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getCreateTime() {

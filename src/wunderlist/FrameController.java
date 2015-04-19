@@ -8,17 +8,18 @@ package wunderlist;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -55,6 +56,16 @@ public class FrameController implements Initializable {
     private DatePicker informationBoardReminMe;
     @FXML
     private TextArea informationBoardNote;
+    @FXML
+    private Label inboxBoardNumber;
+    @FXML
+    private ListView<?> categories;
+    @FXML
+    private AnchorPane addNewCategory;
+    @FXML
+    private TextField addTextField;
+    @FXML
+    private ImageView addImage;
 
     /**
      * Initializes the controller class.
@@ -70,7 +81,7 @@ public class FrameController implements Initializable {
 
     @FXML
     private void handleNew() {
-        wunderlist.listOfItems.clear();
+        wunderlist.inbox.clear();
         wunderlist.setEntryFilePath(null);
     }
 
@@ -120,6 +131,11 @@ public class FrameController implements Initializable {
     @FXML
     private void handleExit() {
         System.exit(0);
+    }
+
+    @FXML
+    private void inboxClicked(MouseEvent event) {
+        wunderlist.items.setItems(wunderlist.inbox);
     }
 
 }
