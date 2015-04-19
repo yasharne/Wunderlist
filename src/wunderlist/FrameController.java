@@ -8,6 +8,10 @@ package wunderlist;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -23,6 +27,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 /**
  * FXML Controller class
@@ -53,8 +58,6 @@ public class FrameController implements Initializable {
     @FXML
     private DatePicker informationBoardDueDate;
     @FXML
-    private DatePicker informationBoardReminMe;
-    @FXML
     private TextArea informationBoardNote;
     @FXML
     private Label inboxBoardNumber;
@@ -66,6 +69,8 @@ public class FrameController implements Initializable {
     private TextField addTextField;
     @FXML
     private ImageView addImage;
+    @FXML
+    private DatePicker informationBoardRemindMe;
 
     /**
      * Initializes the controller class.
@@ -137,5 +142,8 @@ public class FrameController implements Initializable {
     private void inboxClicked(MouseEvent event) {
         wunderlist.items.setItems(wunderlist.inbox);
     }
+
+
+
 
 }

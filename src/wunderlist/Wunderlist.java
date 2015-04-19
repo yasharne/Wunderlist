@@ -227,7 +227,8 @@ public class Wunderlist extends Application {
                 informationBoardRemindMe.valueProperty().bindBidirectional(newValue.remindDate());
                 //----------------set suitable image on favorite image
                 ///newValue.favoriteImage().set(new Image(getClass().getResourceAsStream("Images/favorite" + (newValue.favorite().get() ? "1" : "0") + ".png")));
-                //informationBoardFavorite.imageProperty().bindBidirectional(newValue.favoriteImage());
+                
+                //informationBoardFavorite.imageProperty().bindBidirectional(newValue.favoriteImage);
             }
         });
         items.setOnMouseClicked((MouseEvent event) -> {

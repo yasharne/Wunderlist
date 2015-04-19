@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
@@ -32,7 +33,7 @@
                         <MenuItem mnemonicParsing="false" text="Check for Updates" />
                         <MenuItem mnemonicParsing="false" text="Become a Pro" />
                         <MenuItem mnemonicParsing="false" text="Account Setting" />
-                        <MenuItem mnemonicParsing="false" text="Change Backround" />
+                        <MenuItem mnemonicParsing="false" onAction="#changeBackground" text="Change Backround" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" text="Tell Your Friends..." />
                         <MenuItem mnemonicParsing="false" text="Get Wunderlist Pro for Free" />
@@ -163,6 +164,9 @@
                      <effect>
                         <DropShadow color="#0000004d" />
                      </effect>
+                     <children>
+                        <TextField layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="323.0" promptText="Add comment..." style="-fx-background-radius: 5;" />
+                     </children>
                   </AnchorPane>
                </children>
             </VBox>

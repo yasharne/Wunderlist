@@ -1,21 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<entries>
-    <entry>
-        <createTime>2015-04-20</createTime>
-        <done>false</done>
-        <dueTime>2015-04-20</dueTime>
-        <favorite>false</favorite>
-        <note></note>
-        <title>gfxcljefdcx</title>
-        <remindTime>2015-04-01</remindTime>
-    </entry>
-    <entry>
-        <createTime>2015-04-20</createTime>
-        <done>false</done>
-        <dueTime>2015-04-20</dueTime>
-        <favorite>false</favorite>
-        <note></note>
-        <title>rhgc</title>
-        <remindTime>2015-04-06</remindTime>
-    </entry>
-</entries>
+<entries/>

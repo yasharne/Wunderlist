@@ -41,7 +41,7 @@ public class Entry {
         this.note = new SimpleStringProperty("");
         this.createTime = new SimpleObjectProperty<>(LocalDate.now());
         this.dueDate = new SimpleObjectProperty<>(LocalDate.now());
-        this.remindMe = new SimpleObjectProperty<LocalDate>();
+        this.remindMe = new SimpleObjectProperty<LocalDate>(LocalDate.now());
         //createTime = Calendar.getInstance();
         this.done = new SimpleBooleanProperty(false);
         this.favorite = new SimpleBooleanProperty(false);
