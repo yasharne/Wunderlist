@@ -27,10 +27,10 @@ public class Entry {
     private StringProperty note;
     private BooleanProperty done;
     private BooleanProperty favorite;
-    //private ObjectProperty<Image> favoriteImage;
     private ObjectProperty<LocalDate> createTime;
     private ObjectProperty<LocalDate> dueDate;
     private ObjectProperty<LocalDate> remindMe;
+    private StringProperty comment;
 
     public Entry() {
         this("");
@@ -45,6 +45,7 @@ public class Entry {
         //createTime = Calendar.getInstance();
         this.done = new SimpleBooleanProperty(false);
         this.favorite = new SimpleBooleanProperty(false);
+        comment = new SimpleStringProperty("");
 
         //this.favoriteImage = new SimpleObjectProperty<>();
         //this.favoriteImage = new SimpleObjectProperty<Image>(new Image(getClass().getResourceAsStream("Images/favorite" + (this.favorite.get() ? "1" : "0") + ".png")));
@@ -128,15 +129,22 @@ public class Entry {
     public ObjectProperty<LocalDate> remindDate() {
         return this.remindMe;
     }
+    
+    //--------------------------------------------
+    
+    public String getComment(){
+        return this.comment.get();
+    }
+    
+    public void setComment(String comment){
+        this.comment.set(comment);
+    }
+    
+    public StringProperty comment(){
+        return this.comment;
+    }
 
     //---------------------------------------------
-    /*   public Image getFavoriteImage() {
-     return this.favoriteImage.get();
-     }
-    
-     public void setFavoriteImage(Image favoriteImage) {
-     this.favoriteImage.set(favoriteImage);
-     }*/
 
     @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getCreateTime() {

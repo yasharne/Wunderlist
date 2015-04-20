@@ -33,7 +33,7 @@
                         <MenuItem mnemonicParsing="false" text="Check for Updates" />
                         <MenuItem mnemonicParsing="false" text="Become a Pro" />
                         <MenuItem mnemonicParsing="false" text="Account Setting" />
-                        <MenuItem mnemonicParsing="false" onAction="#changeBackground" text="Change Backround" />
+                        <MenuItem mnemonicParsing="false" text="Change Backround" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                         <MenuItem mnemonicParsing="false" text="Tell Your Friends..." />
                         <MenuItem mnemonicParsing="false" text="Get Wunderlist Pro for Free" />
@@ -56,8 +56,14 @@
                   <Label text="Inbox" BorderPane.alignment="CENTER" />
                </left>
                <right>
-                  <Label fx:id="inboxBoardNumber" BorderPane.alignment="CENTER" />
+                  <Label fx:id="inboxBoardNumber" text="0" BorderPane.alignment="CENTER" />
                </right>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </BorderPane>
             <ListView fx:id="categories" prefHeight="520.0" prefWidth="280.0" />
             <AnchorPane fx:id="addNewCategory" prefHeight="40.0" prefWidth="280.0" style="-fx-background-color: white;">
@@ -148,14 +154,17 @@
                               <DropShadow color="#00000034" />
                            </effect>
                         </TextArea>
-                        <AnchorPane prefHeight="40.0" prefWidth="380.0" style="-fx-background-color: white;">
+                        <Label fx:id="comment" prefHeight="40.0" prefWidth="380.0" style="-fx-background-color: #FFCC99;">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="5.0" />
                            </VBox.margin>
                            <effect>
-                              <DropShadow color="#00000034" />
+                              <DropShadow color="#0000004d" />
                            </effect>
-                        </AnchorPane>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </Label>
                      </children>
                      <VBox.margin>
                         <Insets />
@@ -165,7 +174,7 @@
                         <DropShadow color="#0000004d" />
                      </effect>
                      <children>
-                        <TextField layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="323.0" promptText="Add comment..." style="-fx-background-radius: 5;" />
+                        <TextField fx:id="addComment" layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="323.0" promptText="Add comment..." style="-fx-background-radius: 5;" />
                      </children>
                   </AnchorPane>
                </children>

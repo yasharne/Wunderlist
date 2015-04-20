@@ -5,6 +5,7 @@
  */
 package wunderlist;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 import wunderlist.model.Entry;
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,10 @@ public class Wunderlist extends Application {
     TextArea informationBoardNote;
     ImageView informationBoardFavorite;
     ImageView addImage;
+    Label inboxBoardNumber;
+    //Label comment;
     TextField addTextField;
+    //TextField addComment;
     VBox middleBox;
     DatePicker informationBoardDueDate;
     DatePicker informationBoardRemindMe;
@@ -124,6 +128,13 @@ public class Wunderlist extends Application {
         informationBoardFavorite = (ImageView) informationBoard.lookup("#informationBoardFavorite");
         informationBoardDueDate = (DatePicker) root.lookup("#informationBoardDueDate");
         informationBoardRemindMe = (DatePicker) root.lookup("#informationBoardRemindMe");
+        inboxBoardNumber = (Label) root.lookup("#inboxBoardNumber");
+        Label comment = (Label) root.lookup("#comment");
+        TextField addComment = (TextField) root.lookup("#addComment");
+        addComment.setOnAction((ActionEvent event) -> {
+            comment.setText(addComment.getText());
+            addComment.setText("");
+        });
         categories = (ListView<Category>) root.lookup("#categories");
         categories.setItems(listOfCategories);
         categories.setCellFactory(lv -> new ListCell<Category>() {
@@ -169,16 +180,17 @@ public class Wunderlist extends Application {
                             setGraphic(null);
 
                         } else {
-                            ImageView iv = new ImageView(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite().get() ? "1" : "0") + ".png")));
-                            iv.setOnMouseClicked((MouseEvent event) -> {
+                            ImageView view = new ImageView(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite().get() ? "1" : "0") + ".png")));
+                            view.setOnMouseClicked((MouseEvent event) -> {
                                 items.getSelectionModel().selectedItemProperty().get().setFavorite(!items.getSelectionModel().selectedItemProperty().get().favorite().get());
-                                iv.setImage(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite().get() ? "1" : "0") + ".png")));
-                                //informationBoardFavorite.setImage(iv.getImage());
+                                view.setImage(new Image(getClass().getResourceAsStream("Images/favorite" + (item.favorite().get() ? "1" : "0") + ".png")));
+
+                                //informationBoardFavorite.setImage(view.getImage());
                                 //iv.imageProperty().bindBidirectional(new Image(getClass().getResourceAsStream("Images/favorite"+(item.favorite.get()?"1":"0")+".png")));
                                 event.consume();
                             });
-                            iv.setFitHeight(25);
-                            iv.setFitWidth(25);
+                            view.setFitHeight(25);
+                            view.setFitWidth(25);
                             String text = item.title().get();
                             setText(null);
                             AnchorPane ap = new AnchorPane();
@@ -192,7 +204,7 @@ public class Wunderlist extends Application {
                             label.setLayoutY(10);
                             label.textProperty().bindBidirectional(item.title());
                             ap.getChildren().addAll(cb, label);
-                            BorderPane borderPane = new BorderPane(null, null, iv, null, ap);
+                            BorderPane borderPane = new BorderPane(null, null, view, null, ap);
                             setGraphic(borderPane);
                         }
                     }
@@ -207,6 +219,7 @@ public class Wunderlist extends Application {
                     informationBoardNote.textProperty().unbindBidirectional(oldValue.note());
                     informationBoardDueDate.valueProperty().unbindBidirectional(oldValue.dueDate());
                     informationBoardRemindMe.valueProperty().unbindBidirectional(oldValue.remindDate());
+                    comment.textProperty().unbindBidirectional(oldValue.comment());
                     //informationBoardFavorite.imageProperty().unbindBidirectional(oldValue.favoriteImage());
                 }
                 informationBoardText.setText(newValue.getTitle());
@@ -225,9 +238,12 @@ public class Wunderlist extends Application {
                 informationBoardDueDate.valueProperty().bindBidirectional(newValue.dueDate());
                 informationBoardRemindMe.setValue(newValue.getremindTime());
                 informationBoardRemindMe.valueProperty().bindBidirectional(newValue.remindDate());
-                //----------------set suitable image on favorite image
+                informationBoardFavorite.setImage(new Image(getClass().getResourceAsStream("Images/favorite" + (newValue.favorite().get() ? "1" : "0") + ".png")));
+                comment.setText(newValue.getComment());
+                comment.textProperty().bindBidirectional(newValue.comment());
+//----------------set suitable image on favorite image
                 ///newValue.favoriteImage().set(new Image(getClass().getResourceAsStream("Images/favorite" + (newValue.favorite().get() ? "1" : "0") + ".png")));
-                
+
                 //informationBoardFavorite.imageProperty().bindBidirectional(newValue.favoriteImage);
             }
         });
@@ -263,14 +279,17 @@ public class Wunderlist extends Application {
                     categories.getSelectionModel().getSelectedItem().add(e);
                 }
                 inbox.add(0, e);
+                inboxBoardNumber.setText(String.valueOf(Integer.parseInt(inboxBoardNumber.getText()) + 1));
                 addItemTextField.setText("");
             }
 
         });
+
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         FrameController fc = loader.getController();
         fc.setMainApp(this);
+        primaryStage.setTitle("Wunderlist");
         primaryStage.setResizable(false);
         primaryStage.show();
 
@@ -305,7 +324,7 @@ public class Wunderlist extends Application {
             //listOfItems.clear();
             //listOfCategories.clear();
             inbox.clear();
-            
+
             //listOfItems.addAll(wrapper.getEntries());
             //listOfCategories.addAll(wrapper.getCategories());
             inbox.addAll(wrapper.getEntries());
